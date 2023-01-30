@@ -17,7 +17,15 @@ initialNameList = []
 def getExcel(location, sheetName):
     df = pd.read_excel(location, sheet_name = sheetName)
 
-    for i in range(0, len(df.index)): 
+    for i in range(0, len(df.index)):
+        if df['Subgenus'][i] == 'x' and df['Subspecies'][i] == 'x':
+            name = [df['Genus'][i], '', df['Species'][i], '']
+        if df['Subgenus'][i] != 'x' and df['Subspecies'][i] == 'x':
+            name = [df['Genus'][i], df['Subgenus'][i], df['Species'][i], '']
+        if df['Subgenus'][i] == 'x' and df['Subspecies'][i] != 'x':
+            name = [df['Genus'][i], '', df['Species'][i], df['Subspecies'][i]]
+        else:
+            name = [df['Genus'][i], df['Subgenus'][i], df['Species'][i], df['Subspecies'][i]]
         name = [df['Genus'][i], df['Subgenus'][i], df['Species'][i], df['Subspecies'][i]] #columns name first, then rows number will be iterated.
         initialNameList.append(name)  # This will append names that has been read from excel to the list
 
