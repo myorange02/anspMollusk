@@ -20,13 +20,13 @@ def getExcel(location, sheetName):
     for i in range(0, len(df.index)):
         if df['Subgenus'][i] == 'x' and df['Subspecies'][i] == 'x':
             name = [df['Genus'][i], '', df['Species'][i], '']
-        if df['Subgenus'][i] != 'x' and df['Subspecies'][i] == 'x':
+        elif df['Subgenus'][i] != 'x' and df['Subspecies'][i] == 'x':
             name = [df['Genus'][i], df['Subgenus'][i], df['Species'][i], '']
-        if df['Subgenus'][i] == 'x' and df['Subspecies'][i] != 'x':
+        elif df['Subgenus'][i] == 'x' and df['Subspecies'][i] != 'x':
             name = [df['Genus'][i], '', df['Species'][i], df['Subspecies'][i]]
         else:
             name = [df['Genus'][i], df['Subgenus'][i], df['Species'][i], df['Subspecies'][i]]
-        name = [df['Genus'][i], df['Subgenus'][i], df['Species'][i], df['Subspecies'][i]] #columns name first, then rows number will be iterated.
+        #columns name first, then rows number will be iterated.
         initialNameList.append(name)  # This will append names that has been read from excel to the list
 
     return 0
@@ -45,7 +45,7 @@ def getMolluskInfo():
         speciesName = str(name[2]).strip() #Species Name
         subSpeciesName = str(name[3]).strip() #Subspecies Name
         if subGenusName == '' and subSpeciesName == '':
-            data2['Name'].append(f'{genusName} ({subGenusName}) {speciesName}')
+            data2['Name'].append(f'{genusName} {speciesName}')
         elif subGenusName != '' and subSpeciesName == '':
             data2['Name'].append(f'{genusName} ({subGenusName}) {speciesName}')
         elif subGenusName == '' and subSpeciesName != '':
@@ -201,11 +201,11 @@ def exportExcel(location, data2):
     return 0
 
 if __name__ == '__main__':
-    fileLoc = r'D:\\coding\\nameFiltered.xlsx'
+    fileLoc = r'D:\\coding\\Sample_names.xlsx'
     sheetName = 'Sheet1'
     getExcel(fileLoc, sheetName)
 
     data2 = getMolluskInfo()
 
     exportLoc = r'D:\\coding\\test_database.xlsx'
-    exportExcel(data2)
+    exportExcel(exportLoc, data2)
