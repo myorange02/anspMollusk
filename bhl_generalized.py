@@ -150,7 +150,33 @@ def getMolluskInfo():
                     pageLinkList.append(link)
                     sourceNameList.append('search WITH quotation')
                     appendNum += 1
-        
+
+        if appendNum == 0:
+            if subGenusName == '' and subSpeciesName == '':
+                response = get(f'https://www.biodiversitylibrary.org/search?searchTerm={genusName}+"{speciesName}"&stype=F')
+            elif subGenusName != '' and subSpeciesName == '':
+                response = get(f'https://www.biodiversitylibrary.org/search?searchTerm="{genusName}+({subGenusName})"+{speciesName}&stype=F')
+            elif subGenusName == '' and subSpeciesName != '':
+                response = get(f'https://www.biodiversitylibrary.org/search?searchTerm={genusName}+"{speciesName}+{subSpeciesName}"&stype=F')
+            else:
+                response = get(f'https://www.biodiversitylibrary.org/search?searchTerm={genusName}+({subGenusName})+"{speciesName}+{subSpeciesName}"&stype=F')
+
+            if response.status_code != 200:
+                print('Error has happened')
+            else:
+                soup = bs(response.text, "html.parser")
+                pubs = soup.find_all('div', class_="pubResult")
+                for pub in pubs:
+                    if appendNum == 10:
+                        break
+                    anchor = pub.find_all('a') # this creates a list
+                    link = anchor[0]['href'] # since anchor is a list, we need to tag it as a list first, and then call dictionary keyword 'dict'
+                    if link[0:5] != 'https':
+                        link = f'https://www.biodiversitylibrary.org{link}'
+                    pageLinkList.append(link)
+                    sourceNameList.append('search PART quotation')
+                    appendNum += 1
+
         if appendNum == 0:
             if subGenusName == '' and subSpeciesName == '':
                 response = get(f'https://www.biodiversitylibrary.org/search?searchTerm={genusName}+{speciesName}&stype=F')
