@@ -14,7 +14,6 @@ import json
 
 data2 = {'Name': [], 'PageLink': [], 'Source': [], 'Year': []}
 
-
 def getExcel(listName, location, sheetName):
     df = pd.read_excel(location, sheet_name = sheetName)
 
@@ -205,56 +204,10 @@ def fillTheSpace(dataList, pageLinkList):
 def make_hyperlink(value):
     return '=HYPERLINK("%s", "%s")' % (value, value)
 
-def exportExcel(location, data2):
-    df2 = pd.DataFrame(data2, columns = ['Name', 'PageLink', 'Source'])
+def exportExcel(location, dataList):
+    df2 = pd.DataFrame(dataList, columns = ['Name', 'PageLink', 'Source'])
     df2['PageLink'] = df2['PageLink'].apply(lambda x: make_hyperlink(x))
     
     df2.to_excel(location, index = False)
 
     return 0
-
-if __name__ == '__main__':
-    initialNameList = []
-    fileLoc = r'D:\\coding\\Sample_names.xlsx'
-    sheetName = 'Sheet1'
-    initialNameList = getExcel(initialNameList, fileLoc, sheetName)
-    
-    genusName = ''
-    subGenusName = ''
-    speciesName = ''
-    subSpeciesName = ''
-
-    for name in initialNameList:
-        genusName = str(name[0]).strip() #Genus Name
-        subGenusName = str(name[1]).strip() #Subgenus Name
-        speciesName = str(name[2]).strip() #Species Name
-        subSpeciesName = str(name[3]).strip() #Subspecies Name
-        if subGenusName == '' and subSpeciesName == '':
-            data2['Name'].append(f'{genusName} {speciesName}')
-        elif subGenusName != '' and subSpeciesName == '':
-            data2['Name'].append(f'{genusName} ({subGenusName}) {speciesName}')
-        elif subGenusName == '' and subSpeciesName != '':
-            data2['Name'].append(f'{genusName} {speciesName} {subSpeciesName}')
-        else:
-            data2['Name'].append(f'{genusName} ({subGenusName}) {speciesName} {subSpeciesName}')
-
-        pageLinkList = []
-        sourceNameList = []
-        appendNum = 0
-
-        appendNum, pageLinkList, sourceNameList = surfAPI(genusName, subGenusName, speciesName, subSpeciesName, pageLinkList, sourceNameList, appendNum)
-        if appendNum == 0:
-            appendNum, pageLinkList, sourceNameList = surfWithQuotation(genusName, subGenusName, speciesName, subSpeciesName, pageLinkList, sourceNameList, appendNum)
-
-        if appendNum == 0:
-            appendNum, pageLinkList, sourceNameList = surfWithPartialQuotation(genusName, subGenusName, speciesName, subSpeciesName, pageLinkList, sourceNameList, appendNum)
-        
-        if appendNum == 0:
-            appendNum, pageLinkList, sourceNameList = surfWithOutQuotation(genusName, subGenusName, speciesName, subSpeciesName, pageLinkList, sourceNameList, appendNum)
-        
-        listExtender('PageLink', pageLinkList)
-        listExtender('Source', sourceNameList)
-        data2 = fillTheSpace(data2, pageLinkList)
-
-    exportLoc = r'D:\\coding\\test_database.xlsx'
-    exportExcel(exportLoc, data2)
