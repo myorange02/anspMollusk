@@ -188,9 +188,9 @@ def surfWithOutQuotation(genusName, subGenusName, speciesName, subSpeciesName, p
 
     return appendNum, pageLinkList, sourceNameList # 임시
 
-def listExtender(columnName, extendingList):
-    data2[columnName].extend(extendingList)
-    return 0
+def listExtender(dataList, columnName, extendingList):
+    dataList[columnName].extend(extendingList)
+    return dataList
 
 def fillTheSpace(dataList, pageLinkList):
     for i in range(0, len(pageLinkList) - 1):

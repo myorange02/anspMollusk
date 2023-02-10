@@ -30,7 +30,7 @@ if __name__ == '__main__':
         sourceNameList = []
         appendNum = 0
 
-        appendNum, pageLinkList, sourceNameList = surfAPI(genusName, subGenusName, speciesName, subSpeciesName, pageLinkList, sourceNameList, appendNum)
+        appendNum, pageLinkList, sourceNameList = surfAPI(genusName, subGenusName, speciesName, subSpeciesName, appendNum, pageLinkList, sourceNameList)
         if appendNum == 0:
             appendNum, pageLinkList, sourceNameList = surfWithQuotation(genusName, subGenusName, speciesName, subSpeciesName, pageLinkList, sourceNameList, appendNum)
 
@@ -40,8 +40,8 @@ if __name__ == '__main__':
         if appendNum == 0:
             appendNum, pageLinkList, sourceNameList = surfWithOutQuotation(genusName, subGenusName, speciesName, subSpeciesName, pageLinkList, sourceNameList, appendNum)
         
-        listExtender('PageLink', pageLinkList)
-        listExtender('Source', sourceNameList)
+        data2 = listExtender(data2, 'PageLink', pageLinkList)
+        data2 = listExtender(data2, 'Source', sourceNameList)
         data2 = fillTheSpace(data2, pageLinkList)
 
     exportLoc = r'D:\\coding\\test_database.xlsx'
