@@ -2,11 +2,11 @@ from bhl_gen_2 import *
 
 if __name__ == '__main__':
     initialNameList = []
-    fileLoc = r'D:\\coding\\Sample_names.xlsx'
+    fileLoc = r'D:\coding\Sample_names.xlsx'
     sheetName = 'Sheet1'
     initialNameList = getExcel(initialNameList, fileLoc, sheetName)
     
-    genusName = ''
+    genusName = ''  
     subGenusName = ''
     speciesName = ''
     subSpeciesName = ''
@@ -44,5 +44,5 @@ if __name__ == '__main__':
         data2 = listExtender(data2, 'Source', sourceNameList)
         data2 = fillTheSpace(data2, pageLinkList)
 
-    exportLoc = r'D:\\coding\\test_database.xlsx'
+    exportLoc = r'D:\coding\test_database.xlsx'
     exportExcel(exportLoc, data2)
